@@ -107,7 +107,7 @@ public class SelectImageActivity extends Activity {
 
             // RestAdapterの生成
             RestAdapter adapter = new RestAdapter.Builder()
-                    .setEndpoint("http://192.168.59.103:8080")
+                    .setEndpoint("http://mobilenurse.t4j.com:8080")
                     .setConverter(new GsonConverter(gson))
                     .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setLog(new AndroidLog("=NETWORK="))
