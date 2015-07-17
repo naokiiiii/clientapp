@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Mobile Nurse</string>
+    <string name="action_settings">Settings</string>
+    <item name="imageView1" type="id">imageView1</item>
+</resources>
