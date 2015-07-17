@@ -18,3 +18,8 @@ clientapp
 
 ####Run App
   ▶botton push
+
+####Literature
+- http://smartphone-zine.com/android/use-opencv-for-android-in-the-android-studio.html
+- http://dev.classmethod.jp/smartphone/android/okhttp-retrofit-rxandroid/
+- http://qiita.com/soundsketcher/items/8390c7b73aaf02f21785
