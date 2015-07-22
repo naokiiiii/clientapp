@@ -15,12 +15,12 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.File;
@@ -28,19 +28,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 public class DirectImageActivity extends Activity implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "DirectImage::Activity";
-    private static final Scalar    FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
+    private static final Scalar FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
 
-    private MenuItem               mItemMain;
+    private MenuItem mItemMain;
     private MenuItem               mItemDirectImage;
     private MenuItem               mItemSelectImage;
 
     private Mat                    mRgba;
     private Mat                    mGray;
-    private File                   mCascadeFile;
-    private CascadeClassifier     mJavaDetector;
+    private File mCascadeFile;
+    private CascadeClassifier mJavaDetector;
 
     private float                  mRelativeFaceSize   = 0.5f;
     private int                    mAbsoluteFaceSize   = 0;
@@ -127,7 +128,7 @@ public class DirectImageActivity extends Activity implements CvCameraViewListene
         super.onResume();
         if (!OpenCVLoader.initDebug()) {
             Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_9, this, mLoaderCallback);
         } else {
             Log.d(TAG, "OpenCV library found inside package. Using it!");
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
@@ -168,7 +169,7 @@ public class DirectImageActivity extends Activity implements CvCameraViewListene
 
         Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++)
-            Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
+            Core.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
 
         return mRgba;
     }
