@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.content.Intent;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
 
@@ -16,6 +19,7 @@ public class MainActivity extends Activity {
     private MenuItem               mItemMain;
     private MenuItem               mItemDirectImage;
     private MenuItem               mItemSelectImage;
+    private MenuItem               mItemSelectMode;
 
     public MainActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
@@ -30,6 +34,18 @@ public class MainActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_main);
+
+//        Button button1 = (Button)findViewById(R.id.button1);
+//        button1.setOnClickListener(this);
+
+        Button button1 = (Button)findViewById(R.id.button1);
+        button1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelectModeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -38,6 +54,7 @@ public class MainActivity extends Activity {
         mItemMain = menu.add("Main");
         mItemDirectImage = menu.add("Direct Image");
         mItemSelectImage = menu.add("Select Image");
+        mItemSelectMode = menu.add("Select Mode");
         return true;
     }
 
@@ -53,8 +70,15 @@ public class MainActivity extends Activity {
         } else if (item == mItemSelectImage) {
             Intent intent = new Intent(this, SelectImageActivity.class);
             startActivity(intent);
+        } else if (item == mItemSelectMode) {
+            Intent intent = new Intent(this, SelectModeActivity.class);
+            startActivity(intent);
         }
         return true;
+    }
+    public void onClick(View v) {
+        Intent intent = new Intent(this, SelectModeActivity.class);
+        startActivity(intent);
     }
 
     private void setMinFaceSize(float faceSize) {
