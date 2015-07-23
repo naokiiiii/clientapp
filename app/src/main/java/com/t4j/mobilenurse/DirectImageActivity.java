@@ -2,6 +2,7 @@ package com.t4j.mobilenurse;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +19,8 @@ public class DirectImageActivity extends Activity {
     private MenuItem               mItemSelectImage;
 
     private CamView mCamView = null;
-    private ARViewNurse mARViewNurse = null;
+    private ARNurseView mARNuerseView = null;
+    private Camera mCamera; //hardware
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,8 @@ public class DirectImageActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mCamView = new CamView(this);
         setContentView(mCamView);
-        mARViewNurse = new ARViewNurse(this);
-        addContentView(mARViewNurse, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
+        mARNuerseView = new ARNurseView(this);
+        addContentView(mARNuerseView, new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 
     }
 

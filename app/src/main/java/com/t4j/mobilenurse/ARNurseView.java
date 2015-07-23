@@ -10,9 +10,9 @@ import android.view.View;
 
 import com.t4j.mobilenurse.R;
 
-public class ARViewNurse extends View {
+public class ARNurseView extends View {
     private static final String TAG = "ARViewNurse::View";
-    public ARViewNurse(Context context)
+    public ARNurseView(Context context)
     {
         super(context);
         prepareImages();
@@ -27,7 +27,6 @@ public class ARViewNurse extends View {
     }
 
     private Bitmap bmpNurse = null;
-    private Bitmap bmpReticleOn = null;
     private void prepareImages()
     {
         Resources r = getResources();
