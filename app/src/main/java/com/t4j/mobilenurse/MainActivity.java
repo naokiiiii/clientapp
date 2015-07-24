@@ -35,9 +35,6 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-//        Button button1 = (Button)findViewById(R.id.button1);
-//        button1.setOnClickListener(this);
-
         Button button1 = (Button)findViewById(R.id.button1);
         button1.setOnClickListener(new OnClickListener() {
             @Override

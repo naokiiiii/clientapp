@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 public class SelectModeActivity extends Activity {
 
@@ -33,6 +36,24 @@ public class SelectModeActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_selectmode);
+
+        ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectModeActivity.this, DirectImageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton imageButton2 = (ImageButton)findViewById(R.id.imageButton2);
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectModeActivity.this, SelectImageActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
