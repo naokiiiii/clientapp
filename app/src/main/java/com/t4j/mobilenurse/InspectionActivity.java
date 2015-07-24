@@ -59,20 +59,20 @@ public class InspectionActivity extends Activity {
 
         super.setContentView(R.layout.activity_inspection);
 
-        // DirectImageActivity‚©‚ç“n‚³‚ê‚½‰æ‘œ‚ğcapturedImageView‚Éİ’èB
+        // DirectImageActivityã‹ã‚‰æ¸¡ã•ã‚ŒãŸç”»åƒã‚’capturedImageViewã«è¨­å®šã€‚
         Intent intent = this.getIntent();
         Bitmap bmp = intent.getParcelableExtra("data");
 
         capturedImageView = (ImageView)findViewById(R.id.capturedImageView);
 
-        // 1/2‚Åó‚¯æ‚Á‚Ä‚¢‚é‚Ì‚Å‚±‚±‚ÅŒ³‚ÌƒTƒCƒY‚É•œŒ³‚³‚¹‚é
+        // 1/2ã§å—ã‘å–ã£ã¦ã„ã‚‹ã®ã§ã“ã“ã§å…ƒã®ã‚µã‚¤ã‚ºã«å¾©å…ƒã•ã›ã‚‹
         Matrix matrix = new Matrix();
         matrix.postScale(4.0f, 4.0f);
         Bitmap bmpRsz = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
         capturedImageView.setImageBitmap(bmpRsz);
 
 	    // save
-	    // sdcardƒtƒHƒ‹ƒ_‚ğw’è
+	    // sdcardãƒ•ã‚©ãƒ«ãƒ€ã‚’æŒ‡å®š
 	    File root = Environment.getExternalStorageDirectory();
 	    FileOutputStream fos = null;
 	    File file = null;
@@ -81,7 +81,7 @@ public class InspectionActivity extends Activity {
 		    fos = new FileOutputStream(file);
 		    bmpRsz.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-		    // TOOD ‚±‚±‚Årest (’ÊM—p‚Ìthread‚Æ’ÊM’†‚Ì‰æ–ÊXV‚Ìthread‚ğ•ª‚¯‚Ä‚¨‚«‚½‚¢‚Ì‚Å‚»‚Ì•Ó‚ğ’²¸j
+		    // TOOD ã“ã“ã§rest (é€šä¿¡ç”¨ã®threadã¨é€šä¿¡ä¸­ã®ç”»é¢æ›´æ–°ã®threadã‚’åˆ†ã‘ã¦ãŠããŸã„ã®ã§ãã®è¾ºã‚’èª¿æŸ»ï¼‰
 		    this.rest(file);
 		    fos.close();
 	    }catch (Exception e) {
@@ -127,12 +127,12 @@ public class InspectionActivity extends Activity {
     }
 
 	private void rest(File file) {
-		// JSON‚Ìƒp[ƒT[
+		// JSONã®ãƒ‘ãƒ¼ã‚µãƒ¼
 		Gson gson = new GsonBuilder()
 				.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 				.registerTypeAdapter(Date.class, new DateTypeAdapter())
 				.create();
-		// RestAdapter‚Ì¶¬
+		// RestAdapterã®ç”Ÿæˆ
 		RestAdapter adapter = new RestAdapter.Builder()
 				.setEndpoint("http://10.222.0.13:8080")
 				.setConverter(new GsonConverter(gson))
@@ -140,7 +140,7 @@ public class InspectionActivity extends Activity {
 				.setLog(new AndroidLog("=NETWORK="))
 				.build();
 
-		// ”ñ“¯Šúˆ—‚ÌÀs
+		// éåŒæœŸå‡¦ç†ã®å®Ÿè¡Œ
 		adapter.create(RetroFitApi.class).updateMultipart(
 				new TypedFile("image/jpeg", file), "testupload")
 				.subscribeOn(Schedulers.newThread())

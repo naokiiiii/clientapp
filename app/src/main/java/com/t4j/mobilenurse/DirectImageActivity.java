@@ -101,7 +101,7 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 		MatOfRect faces = new MatOfRect();
 
-		// Šç”F¯ˆ—–{‘Ì
+		// é¡”èªè­˜å‡¦ç†æœ¬ä½“
 		if ( mJavaDetector != null ){
 			//mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 			mJavaDetector.detectMultiScale(mRgba, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
@@ -109,7 +109,7 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 		Rect[] facesArray = faces.toArray();
 
-		// Šç‚ğŒŸ’m‚µ‚½‚çAƒT[ƒo‚Ö‰æ‘œ‚ğ‘—M‚·‚é‚½‚ß‚ÌƒAƒNƒeƒBƒrƒeƒB(inspectionActivity)‚É‘JˆÚ‚·‚éB
+		// é¡”ã‚’æ¤œçŸ¥ã—ãŸã‚‰ã€ã‚µãƒ¼ãƒã¸ç”»åƒã‚’é€ä¿¡ã™ã‚‹ãŸã‚ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£(inspectionActivity)ã«é·ç§»ã™ã‚‹ã€‚
 		if( facesArray.length > 0 ) {
 			this.moveInspectionActivity(inputFrame);
 		}
@@ -199,20 +199,20 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	}
 
 	/**
-	 * Šç”F¯‚µ‚½‚çInspectionActivity‚É‘JˆÚ
-	 * @param inputFrame Šç”F¯‚Å‚«‚½ƒtƒŒ[ƒ€
+	 * é¡”èªè­˜ã—ãŸã‚‰InspectionActivityã«é·ç§»
+	 * @param inputFrame é¡”èªè­˜ã§ããŸãƒ•ãƒ¬ãƒ¼ãƒ 
 	 */
 	private void moveInspectionActivity(Mat inputFrame) {
-		// ƒtƒŒ[ƒ€ƒf[ƒ^‚ğbitmap‚É•ÏŠ·
+		// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’bitmapã«å¤‰æ›
 		Bitmap dsc = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
 		Utils.matToBitmap(inputFrame, dsc);
 
-		// ‰æ‘œ‚ğk¬ 1/2ƒTƒCƒY (‹‘å‚Èƒf[ƒ^‚ğintent‚Åó‚¯“n‚·‚Æ—‚¿‚é‚±‚Æ‚ª‚ ‚é‚Ì‚ÅA‚Æ‚è‚ ‚¦‚¸1/2‚Ék¬j
+		// ç”»åƒã‚’ç¸®å° 1/2ã‚µã‚¤ã‚º (å·¨å¤§ãªãƒ‡ãƒ¼ã‚¿ã‚’intentã§å—ã‘æ¸¡ã™ã¨è½ã¡ã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§ã€ã¨ã‚Šã‚ãˆãš1/2ã«ç¸®å°ï¼‰
 		Matrix matrix = new Matrix();
 		matrix.postScale(0.5f, 0.5f);
 		Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
 
-		// intent‚Ék¬‚µ‚½‰æ‘œ‚ğİ’è‚µ‚ÄinspectionActivity‚Ö‘JˆÚ
+		// intentã«ç¸®å°ã—ãŸç”»åƒã‚’è¨­å®šã—ã¦inspectionActivityã¸é·ç§»
 		Intent intent = new Intent(this, InspectionActivity.class);
 		intent.putExtra("data", bmpRsz);
 		startActivity(intent);
