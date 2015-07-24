@@ -35,7 +35,7 @@ import java.io.InputStream;
 public class DirectImageActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener {
 
     private static final String    TAG                 = "DirectImage::Activity";
-	private static final Scalar FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
+//	private static final Scalar FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
 
     private MenuItem               mItemMain;
     private MenuItem               mItemDirectImage;
@@ -44,7 +44,7 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	private CameraBridgeViewBase mOpenCvCameraView;
 	private CascadeClassifier mJavaDetector;
 	private Mat                    mRgba;
-	private Mat                    mGray;
+//	private Mat                    mGray;
 	private float                  mRelativeFaceSize   = 0.5f;
 	private int                    mAbsoluteFaceSize   = 0;
 	private File                   mCascadeFile;
@@ -87,11 +87,13 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	public Mat onCameraFrame(Mat inputFrame) {
 
 		inputFrame.copyTo(mRgba);
-		Imgproc.cvtColor(inputFrame, mGray, Imgproc.COLOR_RGBA2GRAY);
+		//Imgproc.cvtColor(inputFrame, mGray, Imgproc.COLOR_RGBA2GRAY);
+		//Imgproc.cvtColor(inputFrame, mRgba, Imgproc.COLOR_RGBA2GRAY);
 
-		if (mAbsoluteFaceSize == 0) {
-			int height = mGray.rows();
-			if (Math.round(height * mRelativeFaceSize) > 0) {
+		if ( mAbsoluteFaceSize == 0 ) {
+			//int height = mGray.rows();
+			int height = mRgba.rows();
+			if ( Math.round(height * mRelativeFaceSize) > 0 ) {
 				mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
 			}
 			//mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
@@ -99,38 +101,28 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 		MatOfRect faces = new MatOfRect();
 
-		if (mJavaDetector != null){
-			mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+		// 顔認識処理本体
+		if ( mJavaDetector != null ){
+			//mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+			mJavaDetector.detectMultiScale(mRgba, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 		}
 
 		Rect[] facesArray = faces.toArray();
 
 		// 顔を検知したら、サーバへ画像を送信するためのアクティビティ(inspectionActivity)に遷移する。
 		if( facesArray.length > 0 ) {
-			// フレームデータをbitmapに変換
-			Bitmap dsc = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
-			Utils.matToBitmap(inputFrame, dsc);
-
-			// 画像を縮小 1/2サイズ (巨大なデータをintentで受け渡すと落ちることがあるので、とりあえず1/2に縮小）
-			Matrix matrix = new Matrix();
-			matrix.postScale(0.5f, 0.5f);
-			Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
-
-			// intentに縮小した画像を設定してinspectionActivityへ遷移
-			Intent intent = new Intent(this, InspectionActivity.class);
-			intent.putExtra("data", bmpRsz);
-			startActivity(intent);
+			this.moveInspectionActivity(inputFrame);
 		}
 		return mRgba;
 	}
 
 	public void onCameraViewStopped() {
-		mGray.release();
+//		mGray.release();
 		mRgba.release();
 	}
 
 	public void onCameraViewStarted(int width, int height) {
-		mGray = new Mat();
+//		mGray = new Mat();
 		mRgba = new Mat();
 	}
 
@@ -204,5 +196,26 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 			Log.d(TAG, "OpenCV library found inside package. Using it!");
 			mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
 		}
+	}
+
+	/**
+	 * 顔認識したらInspectionActivityに遷移
+	 * @param inputFrame 顔認識できたフレーム
+	 */
+	private void moveInspectionActivity(Mat inputFrame) {
+		// フレームデータをbitmapに変換
+		Bitmap dsc = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
+		Utils.matToBitmap(inputFrame, dsc);
+
+		// 画像を縮小 1/2サイズ (巨大なデータをintentで受け渡すと落ちることがあるので、とりあえず1/2に縮小）
+		Matrix matrix = new Matrix();
+		matrix.postScale(0.5f, 0.5f);
+		Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
+
+		// intentに縮小した画像を設定してinspectionActivityへ遷移
+		Intent intent = new Intent(this, InspectionActivity.class);
+		intent.putExtra("data", bmpRsz);
+		startActivity(intent);
+
 	}
 }
