@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
 
@@ -40,6 +41,15 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SelectModeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton imageButton3 = (ImageButton)findViewById(R.id.imageButton3);
+        imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                 startActivity(intent);
             }
         });

@@ -2,28 +2,26 @@ package com.t4j.mobilenurse;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class SelectModeActivity extends Activity {
+public class InfoActivity extends Activity {
 
-    private static final String    TAG                 = "SelectMode::Activity";
+    private static final String    TAG                 = "Main::Activity";
 
     private MenuItem               mItemMain;
     private MenuItem               mItemDirectImage;
     private MenuItem               mItemSelectImage;
     private MenuItem               mItemSelectMode;
 
-    private Uri mPictureUri;
-
-    public SelectModeActivity() {
+    public InfoActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
     }
 
@@ -35,31 +33,13 @@ public class SelectModeActivity extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(R.layout.activity_selectmode);
+        setContentView(R.layout.activity_info);
 
-        ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        ImageButton imageButton5 = (ImageButton)findViewById(R.id.imageButton5);
+        imageButton5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SelectModeActivity.this, DirectImageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton imageButton2 = (ImageButton)findViewById(R.id.imageButton2);
-        imageButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectModeActivity.this, SelectImageActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton imageButton4 = (ImageButton)findViewById(R.id.imageButton4);
-        imageButton4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SelectModeActivity.this, MainActivity.class);
+                Intent intent = new Intent(InfoActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -79,7 +59,7 @@ public class SelectModeActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
         if (item == mItemMain) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, InfoActivity.class);
             startActivity(intent);
         } else if (item == mItemDirectImage) {
             Intent intent = new Intent(this, DirectImageActivity.class);
