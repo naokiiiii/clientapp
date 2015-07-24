@@ -6,18 +6,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.ViewGroup.LayoutParams;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
@@ -43,6 +42,8 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 	private CameraBridgeViewBase mOpenCvCameraView;
 	private CascadeClassifier mJavaDetector;
+	private ARNurseView mARNuerseView;
+
 	private Mat                    mRgba;
 	private Mat                    mGray;
 	private float                  mRelativeFaceSize   = 0.5f;
@@ -51,12 +52,15 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-	    super.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-	    super.setContentView(R.layout.activity_directimage);
+		super.onCreate(savedInstanceState);
+		super.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		super.setContentView(R.layout.activity_directimage);
 
 	    mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
-	    mOpenCvCameraView.setCvCameraViewListener(this);
+		mOpenCvCameraView.setCvCameraViewListener(this);
+
+		mARNuerseView = new ARNurseView(this);
+		addContentView(mARNuerseView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     }
 
     @Override
@@ -120,6 +124,9 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 			Intent intent = new Intent(this, InspectionActivity.class);
 			intent.putExtra("data", bmpRsz);
 			startActivity(intent);
+
+			Log.i(TAG, "GET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
 		}
 		return mRgba;
 	}

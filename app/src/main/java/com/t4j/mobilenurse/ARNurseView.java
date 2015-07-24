@@ -8,10 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
 
-import com.t4j.mobilenurse.R;
-
 public class ARNurseView extends View {
     private static final String TAG = "ARViewNurse::View";
+    private Bitmap bmpNurse, bmpNurse2;
+
     public ARNurseView(Context context)
     {
         super(context);
@@ -21,17 +21,17 @@ public class ARNurseView extends View {
     @Override
     public void onDraw(Canvas canvas)
     {
-        if(bmpNurse != null){
-            canvas.drawBitmap(bmpNurse, coordNurse.x, coordNurse.y, null);
+        if(bmpNurse2 != null){
+            canvas.drawBitmap(bmpNurse2, coordNurse.x, coordNurse.y, null);
         }
     }
 
-    private Bitmap bmpNurse = null;
     private void prepareImages()
     {
         Resources r = getResources();
-        bmpNurse = BitmapFactory.decodeResource(r, R.drawable.nurse);
-        setCoordBomb(new Point(300, 200));
+        bmpNurse = BitmapFactory.decodeResource(r, R.drawable.nurse_n);
+        bmpNurse2 = Bitmap.createScaledBitmap(bmpNurse, 500, 850, false);
+        setCoordBomb(new Point(800, 700));
     }
     private Point coordNurse = null;
     public void setCoordBomb(Point p)
