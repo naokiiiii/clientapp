@@ -6,16 +6,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.view.View;
 
 public class ARNurseView2 extends View {
     private static final String TAG = "ARViewNurse::View";
     private Bitmap bmpNurse, bmpNurse2;
 
+    private MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.good);
+
     public ARNurseView2(Context context)
     {
         super(context);
         prepareImages();
+
+        mp.start();
     }
 
     @Override

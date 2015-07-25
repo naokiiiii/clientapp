@@ -6,11 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.view.View;
 
 public class ARNurseView3 extends View {
     private static final String TAG = "ARViewNurse::View";
     private Bitmap bmpNurse, bmpNurse2;
+
+    private MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.good);
 
     public ARNurseView3(Context context)
     {
@@ -24,6 +27,8 @@ public class ARNurseView3 extends View {
         if(bmpNurse2 != null){
             canvas.drawBitmap(bmpNurse2, coordNurse.x, coordNurse.y, null);
         }
+
+        mp.start();
     }
 
     private void prepareImages()

@@ -42,7 +42,7 @@ public class InspectionActivity extends Activity  {
 
     private ImageView capturedImageView;
 
-    private MediaPlayer mp = null;
+    //private MediaPlayer mp = null;
 
     public InspectionActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
@@ -63,7 +63,7 @@ public class InspectionActivity extends Activity  {
         capturedImageView = (ImageView)findViewById(R.id.capturedImageView);
 
 
-        this.mp = MediaPlayer.create(this, R.raw.good);
+        //this.mp = MediaPlayer.create(this, R.raw.good);
 	    // save
 	    // sdcardフォルダを指定
 	    File root = Environment.getExternalStorageDirectory();
@@ -171,7 +171,7 @@ public class InspectionActivity extends Activity  {
 //											", score:" + diagnose.diagnoses.get(0).score);
                             ((TextView) findViewById(R.id.inspection_result)).setText(diagnose.message);
 						}
-                        mp.start();
+                        //mp.start();
 					}
 				});
 	}
