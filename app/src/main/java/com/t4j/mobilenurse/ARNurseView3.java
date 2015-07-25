@@ -13,7 +13,7 @@ public class ARNurseView3 extends View {
     private static final String TAG = "ARViewNurse::View";
     private Bitmap bmpNurse, bmpNurse2;
 
-    private MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.good);
+    private MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.drunk);
 
     public ARNurseView3(Context context)
     {
