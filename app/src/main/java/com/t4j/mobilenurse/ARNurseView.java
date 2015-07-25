@@ -30,8 +30,8 @@ public class ARNurseView extends View {
     {
         Resources r = getResources();
         bmpNurse = BitmapFactory.decodeResource(r, R.drawable.nurse_n);
-        bmpNurse2 = Bitmap.createScaledBitmap(bmpNurse, 700, 1150, false);
-        setNurseImg(new Point(1300, 170));
+        bmpNurse2 = Bitmap.createScaledBitmap(bmpNurse, 500, 1100, false);
+        setNurseImg(new Point(1420, 50));
     }
     private Point coordNurse = null;
     public void setNurseImg(Point p)
