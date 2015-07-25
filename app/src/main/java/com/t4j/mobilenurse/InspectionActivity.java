@@ -61,10 +61,9 @@ public class InspectionActivity extends Activity  {
 
         Bitmap bmpRsz = mobileNurseApplication.getCapturedImage();
         capturedImageView = (ImageView)findViewById(R.id.capturedImageView);
-        //capturedImageView.setImageBitmap(bmpRsz);
+
 
         this.mp = MediaPlayer.create(this, R.raw.good);
-
 	    // save
 	    // sdcardフォルダを指定
 	    File root = Environment.getExternalStorageDirectory();
@@ -74,6 +73,8 @@ public class InspectionActivity extends Activity  {
 	    try {
             // 画像を256x256にリサイズ
             bmpRsz = Bitmap.createScaledBitmap(bmpRsz, 256, 256, false);
+            capturedImageView.setImageBitmap(bmpRsz);
+
 		    file = new File(root, fileName);
 		    fos = new FileOutputStream(file);
 		    bmpRsz.compress(Bitmap.CompressFormat.JPEG, 100, fos);
