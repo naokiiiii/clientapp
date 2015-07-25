@@ -21,7 +21,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,31 +31,31 @@
         <activity
             android:name=".DirectImageActivity"
             android:label="DirectImage"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".SelectImageActivity"
             android:label="SelectImage"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".SelectModeActivity"
             android:label="SelectMode"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".InspectionActivity"
             android:label="Inspection"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".InfoActivity"
             android:label="Info"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation">
         </activity>
     </application>

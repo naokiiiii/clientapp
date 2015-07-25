@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -17,13 +17,10 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.File;
@@ -43,20 +40,32 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 	private CameraBridgeViewBase mOpenCvCameraView;
 	private CascadeClassifier mJavaDetector;
+	
+	private ARNurseView mARNuerseView;
+	private ARNurseCommentView mARNuerseCmtView;
+	
 	private Mat                    mRgba;
 //	private Mat                    mGray;
 	private float                  mRelativeFaceSize   = 0.5f;
 	private int                    mAbsoluteFaceSize   = 0;
 	private File                   mCascadeFile;
 
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	    super.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	    super.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//		super.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	    super.setContentView(R.layout.activity_directimage);
 
 	    mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
 	    mOpenCvCameraView.setCvCameraViewListener(this);
+//		mOpenCvCameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_FRONT);
+
+		mARNuerseCmtView = new ARNurseCommentView(this);
+		addContentView(mARNuerseCmtView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		mARNuerseView = new ARNurseView(this);
+		addContentView(mARNuerseView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     }
 
     @Override
@@ -203,13 +212,16 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	 * @param inputFrame 顔認識できたフレーム
 	 */
 	private void moveInspectionActivity(Mat inputFrame) {
+
+		Log.i(TAG, "moveInspectionActivity!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+
 		// フレームデータをbitmapに変換
 		Bitmap dsc = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
 		Utils.matToBitmap(inputFrame, dsc);
 
 		// 画像を縮小 1/2サイズ (巨大なデータをintentで受け渡すと落ちることがあるので、とりあえず1/2に縮小）
 		Matrix matrix = new Matrix();
-		matrix.postScale(0.5f, 0.5f);
+		matrix.postScale(0.1f, 0.1f);
 		Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
 
 		// intentに縮小した画像を設定してinspectionActivityへ遷移
