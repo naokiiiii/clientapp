@@ -48,6 +48,7 @@ tools:context=".MainActivity"
         android:text="診断開始！！"
         android:id="@+id/button1"
         android:textSize="30dp"
+        android:textColor="@color/dim_foreground_material_light"
         android:layout_marginBottom="55dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
