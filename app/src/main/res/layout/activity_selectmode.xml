@@ -23,7 +23,7 @@
         android:layout_below="@+id/imageButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
-        android:background="#e0ffff" />
+        android:background="#999999" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,4 +69,14 @@
         android:layout_alignParentStart="true"
         android:src="@drawable/home"
         android:background="#fff0f5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="(Coming Soon?)"
+        android:id="@+id/textView4"
+        android:textColor="#000000"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
