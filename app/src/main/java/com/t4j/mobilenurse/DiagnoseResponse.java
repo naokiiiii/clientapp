@@ -10,7 +10,7 @@ public class DiagnoseResponse {
     String message;
     public List<Diagnose> diagnoses;
     public class Diagnose {
-        int runk;
+        int rank;
         String condition;
         String score;
     }

@@ -207,14 +207,17 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 		Bitmap dsc = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
 		Utils.matToBitmap(inputFrame, dsc);
 
+		MobileNurseApplication app = (MobileNurseApplication)this.getApplication();
+		app.setObj(dsc);
+
 		// 画像を縮小 1/2サイズ (巨大なデータをintentで受け渡すと落ちることがあるので、とりあえず1/2に縮小）
-		Matrix matrix = new Matrix();
-		matrix.postScale(0.5f, 0.5f);
-		Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
+//		Matrix matrix = new Matrix();
+//		matrix.postScale(0.5f, 0.5f);
+//		Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
 
 		// intentに縮小した画像を設定してinspectionActivityへ遷移
 		Intent intent = new Intent(this, InspectionActivity.class);
-		intent.putExtra("data", bmpRsz);
+//		intent.putExtra("data", bmpRsz);
 		startActivity(intent);
 
 	}

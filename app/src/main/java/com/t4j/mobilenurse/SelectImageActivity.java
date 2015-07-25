@@ -134,7 +134,7 @@ public class SelectImageActivity extends Activity {
                             Log.d("SelectActivity", "onNext()");
                             if (diagnose != null) {
                                 ((TextView) findViewById(R.id.text)).setText(
-                                        "runk:" + diagnose.diagnoses.get(0).runk +
+                                        "rank:" + diagnose.diagnoses.get(0).rank +
                                                 ", condition:" + diagnose.diagnoses.get(0).condition +
                                                 ", score:" + diagnose.diagnoses.get(0).score);
                             }

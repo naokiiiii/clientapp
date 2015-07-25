@@ -10,11 +10,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceHolder;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,20 +61,24 @@ public class InspectionActivity extends Activity  {
 
         // DirectImageActivityから渡された画像をcapturedImageViewに設定。
         Intent intent = this.getIntent();
-        Bitmap bmp = intent.getParcelableExtra("data");
+//        Bitmap bmp = intent.getParcelableExtra("data");
 
-        if( bmp == null ) {
-            Log.i(TAG, "bmp is null (intent.getParcelableExtra)");
-            return;
-        }
-
+//        if( bmp == null ) {
+//            Log.i(TAG, "bmp is null (intent.getParcelableExtra)");
+//            return;
+//        }
+        MobileNurseApplication app = (MobileNurseApplication)this.getApplication();
+        Bitmap bmpRsz = app.getObj();
         capturedImageView = (ImageView)findViewById(R.id.capturedImageView);
 
         // 1/2で受け取っているのでここで元のサイズに復元させる
-        Matrix matrix = new Matrix();
-        matrix.postScale(4.0f, 4.0f);
-        Bitmap bmpRsz = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+//        Matrix matrix = new Matrix();
+//        matrix.postScale(4.0f, 4.0f);
+//        Bitmap bmpRsz = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+//        capturedImageView.setImageBitmap(bmpRsz);
         capturedImageView.setImageBitmap(bmpRsz);
+
+        this.mp = MediaPlayer.create(this, R.raw.good);
 
 	    // save
 	    // sdcardフォルダを指定
@@ -87,6 +87,7 @@ public class InspectionActivity extends Activity  {
         String fileName = "sample.jpg";
 	    File file = null;
 	    try {
+            // 画像を256x256にリサイズ
             bmpRsz = Bitmap.createScaledBitmap(bmpRsz, 256, 256, false);
 		    file = new File(root, fileName);
 		    fos = new FileOutputStream(file);
@@ -139,7 +140,8 @@ public class InspectionActivity extends Activity  {
 
     /**
      * serverに顔認した結果を転送。
-     * @param file
+     * @param root
+     * @param fileName
      */
 	private void rest(File root, String fileName) {
 		// JSONのパーサー
@@ -181,12 +183,16 @@ public class InspectionActivity extends Activity  {
 					public void onNext(DiagnoseResponse diagnose) {
 						Log.d("SelectActivity", "onNext()");
 						if (diagnose != null) {
+                            // TODO 診断結果に応じて色々やるのはここで！！
+
+                            // TextViewに診断結果を表示する。
 							((TextView) findViewById(R.id.textView4)).setText(
                                     diagnose.message + " " +
-									"runk:" + diagnose.diagnoses.get(0).runk +
+									"rank:" + diagnose.diagnoses.get(0).rank +
 											", condition:" + diagnose.diagnoses.get(0).condition +
 											", score:" + diagnose.diagnoses.get(0).score);
 						}
+                        mp.start();
 					}
 				});
 	}
