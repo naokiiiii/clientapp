@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class DiagnoseResponse {
     int status;
-
+    String message;
     public List<Diagnose> diagnoses;
     public class Diagnose {
         int runk;

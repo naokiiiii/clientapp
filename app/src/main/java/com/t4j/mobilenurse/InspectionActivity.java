@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -33,7 +35,7 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class InspectionActivity extends Activity {
+public class InspectionActivity extends Activity  {
 
     private static final String    TAG                 = "Inspection::Activity";
     private static final int REQUEST_CAPTURE_IMAGE = 100;
@@ -44,6 +46,8 @@ public class InspectionActivity extends Activity {
     private MenuItem               mItemSelectMode;
 
     private ImageView capturedImageView;
+
+    private MediaPlayer mp = null;
 
     public InspectionActivity() {
         Log.i(TAG, "Instantiated new " + this.getClass());
@@ -63,6 +67,11 @@ public class InspectionActivity extends Activity {
         Intent intent = this.getIntent();
         Bitmap bmp = intent.getParcelableExtra("data");
 
+        if( bmp == null ) {
+            Log.i(TAG, "bmp is null (intent.getParcelableExtra)");
+            return;
+        }
+
         capturedImageView = (ImageView)findViewById(R.id.capturedImageView);
 
         // 1/2で受け取っているのでここで元のサイズに復元させる
@@ -75,15 +84,17 @@ public class InspectionActivity extends Activity {
 	    // sdcardフォルダを指定
 	    File root = Environment.getExternalStorageDirectory();
 	    FileOutputStream fos = null;
+        String fileName = "sample.jpg";
 	    File file = null;
 	    try {
-		    file = new File(root, "sample.jpg");
+            bmpRsz = Bitmap.createScaledBitmap(bmpRsz, 256, 256, false);
+		    file = new File(root, fileName);
 		    fos = new FileOutputStream(file);
 		    bmpRsz.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
 
 		    // TOOD ここでrest (通信用のthreadと通信中の画面更新のthreadを分けておきたいのでその辺を調査）
-		    this.rest(file);
-		    fos.close();
+            this.rest(root, fileName);
 	    }catch (Exception e) {
 		    Log.e("Error", "" + e.toString());
 	    }
@@ -126,7 +137,11 @@ public class InspectionActivity extends Activity {
         return true;
     }
 
-	private void rest(File file) {
+    /**
+     * serverに顔認した結果を転送。
+     * @param file
+     */
+	private void rest(File root, String fileName) {
 		// JSONのパーサー
 		Gson gson = new GsonBuilder()
 				.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -134,7 +149,7 @@ public class InspectionActivity extends Activity {
 				.create();
 		// RestAdapterの生成
 		RestAdapter adapter = new RestAdapter.Builder()
-				.setEndpoint("http://10.222.0.13:8080")
+				.setEndpoint("http://10.222.0.13:80")
 				.setConverter(new GsonConverter(gson))
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				.setLog(new AndroidLog("=NETWORK="))
@@ -142,7 +157,7 @@ public class InspectionActivity extends Activity {
 
 		// 非同期処理の実行
 		adapter.create(RetroFitApi.class).updateMultipart(
-				new TypedFile("image/jpeg", file), "testupload")
+				new TypedFile("image/jpeg", new File(root, fileName)), "testupload")
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(new Observer<DiagnoseResponse>() {
@@ -156,11 +171,18 @@ public class InspectionActivity extends Activity {
 						Log.e("SelectActivity", "Error : " + e.toString());
 					}
 
+                    /**
+                     * 正常にサーバの応答を取得できたら
+                     * 結果をtextViewに表示。
+                     *
+                     * @param diagnose
+                     */
 					@Override
 					public void onNext(DiagnoseResponse diagnose) {
 						Log.d("SelectActivity", "onNext()");
 						if (diagnose != null) {
 							((TextView) findViewById(R.id.textView4)).setText(
+                                    diagnose.message + " " +
 									"runk:" + diagnose.diagnoses.get(0).runk +
 											", condition:" + diagnose.diagnoses.get(0).condition +
 											", score:" + diagnose.diagnoses.get(0).score);
