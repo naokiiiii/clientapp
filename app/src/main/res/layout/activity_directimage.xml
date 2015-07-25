@@ -37,6 +37,6 @@ tools:context=".MainActivity" >
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/fd_activity_surface_view"
-    opencv:camera_id="any"/>
+    opencv:camera_id="front"/>
 
 </RelativeLayout>
