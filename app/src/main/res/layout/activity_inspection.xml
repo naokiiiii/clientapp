@@ -48,12 +48,5 @@ tools:context=".InspectionActivity"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="78dp"/>
-
-    <ProgressBar
-        android:id="@+id/product_image_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        style="?android:attr/progressBarStyle"/>
+>
 </RelativeLayout>

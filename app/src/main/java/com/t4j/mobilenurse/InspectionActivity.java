@@ -1,6 +1,7 @@
 package com.t4j.mobilenurse;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -9,7 +10,6 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,9 +41,7 @@ public class InspectionActivity extends Activity  {
     private MenuItem               mItemSelectImage;
     private MenuItem               mItemSelectMode;
 
-    private ARNurseView2 mARNuerseView2;
-    private ARNurseView3 mARNuerseView3;
-    private ARNurseCommentView mARNuerseCommentView;
+    private ProgressDialog progressDialog;
     private ImageView capturedImageView;
 
     private MediaPlayer mp = null;
@@ -61,6 +59,13 @@ public class InspectionActivity extends Activity  {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         super.setContentView(R.layout.activity_inspection);
+
+        // プログレスダイアログ表示
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(true);
+        progressDialog.show();
 
         // DirectImageActivityから渡された画像をcapturedImageViewに設定。
         Intent intent = this.getIntent();
@@ -80,8 +85,6 @@ public class InspectionActivity extends Activity  {
 //        Bitmap bmpRsz = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
 //        capturedImageView.setImageBitmap(bmpRsz);
         capturedImageView.setImageBitmap(bmpRsz);
-
-        mARNuerseView2 = new ARNurseView2(this);
 
         this.mp = MediaPlayer.create(this, R.raw.good);
 
@@ -190,7 +193,8 @@ public class InspectionActivity extends Activity  {
 						if (diagnose != null) {
                             // TODO 診断結果に応じて色々やるのはここで！！
 
-                            addContentView(mARNuerseView2, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+                            // プログレスダイアログ無効化
+                            progressDialog.dismiss();
                             // TextViewに診断結果を表示する。
 							((TextView) findViewById(R.id.textView4)).setText(
                                     diagnose.message + " " +
