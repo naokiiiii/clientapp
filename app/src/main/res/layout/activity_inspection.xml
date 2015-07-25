@@ -43,6 +43,20 @@ tools:context=".InspectionActivity"
         android:layout_toLeftOf="@+id/hukidashi"
         android:layout_alignTop="@+id/hukidashi"
         />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hukidashi"
+        android:src="@drawable/hukidashi_360"
+        android:scaleType="fitEnd"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignTop="@+id/nurseImage"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="100dp"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,19 +70,7 @@ tools:context=".InspectionActivity"
         android:layout_alignWithParentIfMissing="false"
         android:layout_toRightOf="@+id/hukidashi"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/hukidashi"
-        android:src="@drawable/hukidashi_360"
-        android:scaleType="matrix"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentBottom="false"
-        android:layout_alignTop="@+id/nurseImage"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="100dp"/>
+
     <TextView
         android:id="@+id/inspection_result"
         android:layout_width="wrap_content"
