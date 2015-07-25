@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -17,13 +16,10 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.File;
@@ -35,18 +31,17 @@ import java.io.InputStream;
 public class DirectImageActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener {
 
     private static final String    TAG                 = "DirectImage::Activity";
-//	private static final Scalar FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
 
     private MenuItem               mItemMain;
     private MenuItem               mItemDirectImage;
     private MenuItem               mItemSelectImage;
 
+    private ARNurseView mARNuerseView;
 	private CameraBridgeViewBase mOpenCvCameraView;
 	private CascadeClassifier mJavaDetector;
 	private Mat                    mRgba;
-//	private Mat                    mGray;
-	private float                  mRelativeFaceSize   = 0.5f;
-	private int                    mAbsoluteFaceSize   = 0;
+	private float                 mRelativeFaceSize   = 0.5f;       // 画面内に占める顔の割合
+	private int                   mAbsoluteFaceSize   = 0;
 	private File                   mCascadeFile;
 
     @Override
@@ -57,6 +52,10 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 	    mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
 	    mOpenCvCameraView.setCvCameraViewListener(this);
+
+
+		mARNuerseView = new ARNurseView(this);
+		addContentView(mARNuerseView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     }
 
     @Override
@@ -87,23 +86,19 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	public Mat onCameraFrame(Mat inputFrame) {
 
 		inputFrame.copyTo(mRgba);
-		//Imgproc.cvtColor(inputFrame, mGray, Imgproc.COLOR_RGBA2GRAY);
-		//Imgproc.cvtColor(inputFrame, mRgba, Imgproc.COLOR_RGBA2GRAY);
 
 		if ( mAbsoluteFaceSize == 0 ) {
-			//int height = mGray.rows();
 			int height = mRgba.rows();
 			if ( Math.round(height * mRelativeFaceSize) > 0 ) {
 				mAbsoluteFaceSize = Math.round(height * mRelativeFaceSize);
 			}
-			//mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
 		}
 
 		MatOfRect faces = new MatOfRect();
 
 		// 顔認識処理本体
 		if ( mJavaDetector != null ){
-			//mJavaDetector.detectMultiScale(mGray, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
+			//mJavaDetector.detectMultiScale(mRgba, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 			mJavaDetector.detectMultiScale(mRgba, faces, 1.1, 2, 2, new Size(mAbsoluteFaceSize, mAbsoluteFaceSize), new Size());
 		}
 
@@ -117,12 +112,10 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	}
 
 	public void onCameraViewStopped() {
-//		mGray.release();
 		mRgba.release();
 	}
 
 	public void onCameraViewStarted(int width, int height) {
-//		mGray = new Mat();
 		mRgba = new Mat();
 	}
 
@@ -137,11 +130,9 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 					try {
 						// load cascade file from application resources
 						InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
-						//InputStream is = getResources().openRawResource(R.raw.haarcascade_mcs_mouth);
 
 						File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
 						mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
-						//mCascadeFile = new File(cascadeDir, "haarcascade_mcs_mouth.xml");
 
 						FileOutputStream os = new FileOutputStream(mCascadeFile);
 
@@ -203,21 +194,15 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 	 * @param inputFrame 顔認識できたフレーム
 	 */
 	private void moveInspectionActivity(Mat inputFrame) {
-		// フレームデータをbitmapに変換
-		Bitmap dsc = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
-		Utils.matToBitmap(inputFrame, dsc);
+		// フレームデータをbitmapに変換する。
+		Bitmap capturedImage = Bitmap.createBitmap(inputFrame.width(), inputFrame.height(), Bitmap.Config.ARGB_8888);
+		Utils.matToBitmap(inputFrame, capturedImage);
 
-		MobileNurseApplication app = (MobileNurseApplication)this.getApplication();
-		app.setObj(dsc);
+		// application経由でInspectionActivityに顔認識画像を受け渡す。
+		MobileNurseApplication mobileNurseApplication = (MobileNurseApplication)this.getApplication();
+		mobileNurseApplication.setCapturedImage(capturedImage);
 
-		// 画像を縮小 1/2サイズ (巨大なデータをintentで受け渡すと落ちることがあるので、とりあえず1/2に縮小）
-//		Matrix matrix = new Matrix();
-//		matrix.postScale(0.5f, 0.5f);
-//		Bitmap bmpRsz = Bitmap.createBitmap(dsc, 0, 0, dsc.getWidth(), dsc.getHeight(), matrix, true);
-
-		// intentに縮小した画像を設定してinspectionActivityへ遷移
 		Intent intent = new Intent(this, InspectionActivity.class);
-//		intent.putExtra("data", bmpRsz);
 		startActivity(intent);
 
 	}

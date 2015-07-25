@@ -3,7 +3,6 @@ package com.t4j.mobilenurse;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
@@ -54,29 +53,15 @@ public class InspectionActivity extends Activity  {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        super.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         super.setContentView(R.layout.activity_inspection);
 
-        // DirectImageActivityから渡された画像をcapturedImageViewに設定。
-        Intent intent = this.getIntent();
-//        Bitmap bmp = intent.getParcelableExtra("data");
+        MobileNurseApplication mobileNurseApplication = (MobileNurseApplication)this.getApplication();
 
-//        if( bmp == null ) {
-//            Log.i(TAG, "bmp is null (intent.getParcelableExtra)");
-//            return;
-//        }
-        MobileNurseApplication app = (MobileNurseApplication)this.getApplication();
-        Bitmap bmpRsz = app.getObj();
+        Bitmap bmpRsz = mobileNurseApplication.getCapturedImage();
         capturedImageView = (ImageView)findViewById(R.id.capturedImageView);
-
-        // 1/2で受け取っているのでここで元のサイズに復元させる
-//        Matrix matrix = new Matrix();
-//        matrix.postScale(4.0f, 4.0f);
-//        Bitmap bmpRsz = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
-//        capturedImageView.setImageBitmap(bmpRsz);
-        capturedImageView.setImageBitmap(bmpRsz);
+        //capturedImageView.setImageBitmap(bmpRsz);
 
         this.mp = MediaPlayer.create(this, R.raw.good);
 
@@ -101,14 +86,6 @@ public class InspectionActivity extends Activity  {
 	    }
     }
 
-
-    @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent data) {
-        if( REQUEST_CAPTURE_IMAGE == requestCode && resultCode == Activity.RESULT_OK ){
-            Bitmap capturedImage = (Bitmap) data.getExtras().get("data");
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "called onCreateOptionsMenu");
@@ -123,7 +100,7 @@ public class InspectionActivity extends Activity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
         if (item == mItemMain) {
-            Intent intent = new Intent(this, InspectionActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else if (item == mItemDirectImage) {
             Intent intent = new Intent(this, DirectImageActivity.class);
@@ -186,11 +163,12 @@ public class InspectionActivity extends Activity  {
                             // TODO 診断結果に応じて色々やるのはここで！！
 
                             // TextViewに診断結果を表示する。
-							((TextView) findViewById(R.id.textView4)).setText(
-                                    diagnose.message + " " +
-									"rank:" + diagnose.diagnoses.get(0).rank +
-											", condition:" + diagnose.diagnoses.get(0).condition +
-											", score:" + diagnose.diagnoses.get(0).score);
+//							((TextView) findViewById(R.id.inspection_result)).setText(
+//                                    diagnose.message + " " +
+//									"rank:" + diagnose.diagnoses.get(0).rank +
+//											", condition:" + diagnose.diagnoses.get(0).condition +
+//											", score:" + diagnose.diagnoses.get(0).score);
+                            ((TextView) findViewById(R.id.inspection_result)).setText(diagnose.message);
 						}
                         mp.start();
 					}

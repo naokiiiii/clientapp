@@ -25,15 +25,15 @@ public class MobileNurseApplication extends Application{
 		Log.v(TAG,"--- onTerminate() in ---");
 	}
 
-	public void setObj(Bitmap bmp){
+	public void setCapturedImage(Bitmap bmp){
 		this.capturedImage = bmp;
 	}
 
-	public Bitmap getObj(){
+	public Bitmap getCapturedImage(){
 		return this.capturedImage;
 	}
 
-	public void clearObj(){
+	public void clearCapturedImage(){
 		this.capturedImage = null;
 	}
 }
