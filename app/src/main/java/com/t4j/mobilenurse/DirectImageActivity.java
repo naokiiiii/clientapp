@@ -34,7 +34,7 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
     private MenuItem               mItemMain;
     private MenuItem               mItemDirectImage;
-    private MenuItem               mItemSelectImage;
+//    private MenuItem               mItemSelectImage;
 
     private ARNurseView mARNuerseView;
 	private CameraBridgeViewBase mOpenCvCameraView;
@@ -63,7 +63,7 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
         Log.i(TAG, "called onCreateOptionsMenu");
         mItemMain = menu.add("Main");
         mItemDirectImage = menu.add("Direct Image");
-        mItemSelectImage = menu.add("Select Image");
+//        mItemSelectImage = menu.add("Select Image");
         return true;
     }
 
@@ -76,10 +76,11 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
         } else if (item == mItemDirectImage) {
             Intent intent = new Intent(this, DirectImageActivity.class);
             startActivity(intent);
-        } else if (item == mItemSelectImage) {
-            Intent intent = new Intent(this, SelectImageActivity.class);
-            startActivity(intent);
         }
+//		else if (item == mItemSelectImage) {
+//            Intent intent = new Intent(this, SelectImageActivity.class);
+//            startActivity(intent);
+//        }
         return true;
     }
 

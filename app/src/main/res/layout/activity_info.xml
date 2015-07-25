@@ -29,7 +29,7 @@
         android:text="私はモバイルナース。"
         android:id="@+id/textView5"
         android:textColor="#000000" />
-
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,16 +55,16 @@
         android:text="1.カメラから診断"
         android:id="@+id/textView8"
         android:textColor="#000000" />
-
+-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="　今のあなたの体調を診断します。"
+        android:text="カメラから今のあなたの体調を診断します。"
         android:id="@+id/textView9"
         android:textColor="#000000"
         android:layout_weight="0.06" />
-
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
         android:id="@+id/textView11"
         android:textColor="#000000"
         android:layout_weight="0.22" />
-
+-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
