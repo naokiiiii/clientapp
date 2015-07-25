@@ -8,11 +8,11 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
 
-public class ARNurseCommentView extends View {
-    private static final String TAG = "ARViewNurseComment::View";
-    private Bitmap cmt;
+public class ARNurseView3 extends View {
+    private static final String TAG = "ARViewNurse::View";
+    private Bitmap bmpNurse, bmpNurse2;
 
-    public ARNurseCommentView(Context context)
+    public ARNurseView3(Context context)
     {
         super(context);
         prepareImages();
@@ -21,16 +21,17 @@ public class ARNurseCommentView extends View {
     @Override
     public void onDraw(Canvas canvas)
     {
-        if(cmt != null){
-            canvas.drawBitmap(cmt, coordNurse.x, coordNurse.y, null);
+        if(bmpNurse2 != null){
+            canvas.drawBitmap(bmpNurse2, coordNurse.x, coordNurse.y, null);
         }
     }
 
     private void prepareImages()
     {
         Resources r = getResources();
-        cmt = BitmapFactory.decodeResource(r, R.drawable.comment);
-        setNurseImg(new Point(100, 750));
+        bmpNurse = BitmapFactory.decodeResource(r, R.drawable.nurce_b);
+        bmpNurse2 = Bitmap.createScaledBitmap(bmpNurse, 500, 1100, false);
+        setNurseImg(new Point(1420, 50));
     }
     private Point coordNurse = null;
     public void setNurseImg(Point p)

@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -17,13 +16,10 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.File;
@@ -41,6 +37,7 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
     private MenuItem               mItemDirectImage;
     private MenuItem               mItemSelectImage;
 
+    private ARNurseView mARNuerseView;
 	private CameraBridgeViewBase mOpenCvCameraView;
 	private CascadeClassifier mJavaDetector;
 	private Mat                    mRgba;
@@ -57,6 +54,11 @@ public class DirectImageActivity extends Activity implements CameraBridgeViewBas
 
 	    mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.fd_activity_surface_view);
 	    mOpenCvCameraView.setCvCameraViewListener(this);
+
+//		mARNuerseCommentView = new ARNurseCommentView(this);
+//		addContentView(mARNuerseCommentView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		mARNuerseView = new ARNurseView(this);
+		addContentView(mARNuerseView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
     }
 
     @Override
