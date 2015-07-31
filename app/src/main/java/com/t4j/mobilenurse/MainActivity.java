@@ -60,8 +60,8 @@ public class MainActivity extends Activity {
         Log.i(TAG, "called onCreateOptionsMenu");
         mItemMain = menu.add("Main");
         mItemDirectImage = menu.add("Direct Image");
-        mItemSelectImage = menu.add("Select Image");
-        mItemSelectMode = menu.add("Select Mode");
+//        mItemSelectImage = menu.add("Select Image");
+//        mItemSelectMode = menu.add("Select Mode");
         return true;
     }
 
@@ -74,12 +74,12 @@ public class MainActivity extends Activity {
         } else if (item == mItemDirectImage) {
             Intent intent = new Intent(this, DirectImageActivity.class);
             startActivity(intent);
-        } else if (item == mItemSelectImage) {
-            Intent intent = new Intent(this, SelectImageActivity.class);
-            startActivity(intent);
-        } else if (item == mItemSelectMode) {
-            Intent intent = new Intent(this, SelectModeActivity.class);
-            startActivity(intent);
+//        } else if (item == mItemSelectImage) {
+//            Intent intent = new Intent(this, SelectImageActivity.class);
+//            startActivity(intent);
+//        } else if (item == mItemSelectMode) {
+//            Intent intent = new Intent(this, SelectModeActivity.class);
+//            startActivity(intent);
         }
         return true;
     }

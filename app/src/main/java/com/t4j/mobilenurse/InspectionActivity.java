@@ -130,7 +130,8 @@ public class InspectionActivity extends Activity  {
 				.create();
 		// RestAdapterの生成
 		RestAdapter adapter = new RestAdapter.Builder()
-				.setEndpoint("http://10.222.0.13:80")
+//                .setEndpoint("http://10.222.0.13:80")
+                .setEndpoint("http://mobilenurse.t4j.com:80")
 				.setConverter(new GsonConverter(gson))
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				.setLog(new AndroidLog("=NETWORK="))
